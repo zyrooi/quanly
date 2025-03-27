@@ -1,0 +1,125 @@
+repeat task.wait(5) until game:IsLoaded();
+getgenv().Image = "rbxthumb://type=Asset&id=115223276329152&w=420&h=420"; -- put a asset id in here to make it work
+getgenv().ToggleUI = "E" -- This where you can Toggle the Fluent ui library
+
+task.spawn(function()
+    if not getgenv().LoadedMobileUI == true then getgenv().LoadedMobileUI = true
+        local OpenUI = Instance.new("ScreenGui");
+        local ImageButton = Instance.new("ImageButton");
+        local UICorner = Instance.new("UICorner");
+        OpenUI.Name = "OpenUI";
+        OpenUI.Parent = game:GetService("CoreGui");
+        OpenUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
+        ImageButton.Parent = OpenUI;
+        ImageButton.BackgroundColor3 = Color3.fromRGB(105,105,105);
+        ImageButton.BackgroundTransparency = 0.8
+        ImageButton.Position = UDim2.new(0,30,0,10);
+        ImageButton.Size = UDim2.new(0,55,0,55);
+        ImageButton.Image = getgenv().Image;
+        ImageButton.Draggable = true;
+        ImageButton.Transparency = 1;
+        UICorner.CornerRadius = UDim.new(0,200);
+        UICorner.Parent = ImageButton;
+        ImageButton.MouseButton1Click:Connect(function()
+            game:GetService("VirtualInputManager"):SendKeyEvent(true,getgenv().ToggleUI,false,game);
+        end)
+    end
+end)
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+local Window = Fluent:CreateWindow({
+    Title = "Banana Hub [Premium]",
+    SubTitle = "By: oibaka",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(480, 350),
+    Acrylic = true, -- The blur may be detectable, setting this to false disables blur entirely
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.E -- Used when theres no MinimizeKeybind
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "Tabs General", Icon = "" }),
+    Pro = Window:AddTab({ Title = "Tabs Localplayer", Icon = "" }), 
+    
+}
+
+local ToggleMirageIsland = Tabs.Main and Tabs.Main:AddToggle("ToggleMirageIsland", {Title = "Auto Win ( Tween )", Default = false })
+
+if ToggleMirageIsland then
+    ToggleMirageIsland:OnChanged(function(Value)
+        _G.FindMirageIsland = Value
+    end)
+end
+
+if Options and Options.ToggleMirageIsland then
+    Options.ToggleMirageIsland:SetValue(false)
+end
+
+spawn(function()
+    while wait() do
+        if _G.FindMirageIsland then
+            local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local runService = game:GetService("RunService")
+
+local newPosition = Vector3.new(-745.2208251953125, 31.985883712768555, -600.4518432617188) -- Tọa độ đích
+local speed = 300 -- Tốc độ di chuyển (studs/giây)
+
+if character then
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    -- Vô hiệu hóa ảnh hưởng của trọng lực
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
+    humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+
+    -- Xóa lực cũ nếu có
+    if humanoidRootPart:FindFirstChild("FlightVelocity") then
+        humanoidRootPart:FindFirstChild("FlightVelocity"):Destroy()
+    end
+
+    -- Tạo BodyVelocity để bay mượt
+    local bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.Name = "FlightVelocity"
+    bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge) -- Bay tự do
+    bodyVelocity.Velocity = (newPosition - humanoidRootPart.Position).unit * speed
+    bodyVelocity.Parent = humanoidRootPart
+
+    -- Kiểm tra vị trí để dừng bay
+    local connection
+    connection = runService.Heartbeat:Connect(function()
+        if (humanoidRootPart.Position - newPosition).magnitude < 5 then
+            bodyVelocity:Destroy() -- Dừng bay
+            humanoidRootPart.CFrame = CFrame.new(newPosition) -- Đặt nhân vật chính xác vào điểm đích
+            connection:Disconnect() -- Ngắt kết nối vòng lặp
+        end
+    end)
+end
+        end
+    end
+end)
+
+local Slider = Tabs.Pro:AddSlider("Slider", {
+        Title = "SpeedMultiplier",
+        Description = "",
+        Default = 2,
+        Min = 0,
+        Max = 500,
+        Rounding = 1,
+        Callback = function(Value)
+    game.Players.LocalPlayer.Character:SetAttribute("SpeedMultiplier", Value)
+        end
+    })
+local Slider = Tabs.Pro:AddSlider("Slider", {
+        Title = "DashLength",
+        Description = "",
+        Default = 2,
+        Min = 0,
+        Max = 500,
+        Rounding = 1,
+        Callback = function(Value)
+      game.Players.LocalPlayer.Character:SetAttribute("DashLength", Value)
+        end
+    })
+
