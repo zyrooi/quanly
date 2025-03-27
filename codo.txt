@@ -45,6 +45,174 @@ local Tabs = {
     
 }
 
+local Farming = Tabs.Main:AddSection("Farming")
+
+
+local listfastattack = {'Normal Attack','Fast Attack','Super Fast Attack'}
+
+    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
+        Title = "Select Fast Attack",
+        Values = listfastattack,
+        Multi = false,
+        Default = 1,
+    })
+    DropdownDelayAttack:SetValue("Fast Attack")
+    DropdownDelayAttack:OnChanged(function(Value)
+    _G.FastAttackFaiFao_Mode = Value
+	if _G.FastAttackFaiFao_Mode == "Fast Attack" then
+		_G.Fast_Delay = 0.15
+	elseif _G.FastAttackFaiFao_Mode == "Normal Attack" then
+		_G.Fast_Delay = 0.25
+	elseif _G.FastAttackFaiFao_Mode == "Super Fast Attack" then
+		_G.Fast_Delay = 0.05
+	end
+end)
+
+    local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
+        Title = "Weapon",
+        Values = {'Melee','Sword','Blox Fruit'},
+        Multi = false,
+        Default = 1,
+    })
+    DropdownSelectWeapon:SetValue('Melee')
+    DropdownSelectWeapon:OnChanged(function(Value)
+        ChooseWeapon = Value
+    end)
+    task.spawn(function()
+        while wait() do
+            pcall(function()
+                if ChooseWeapon == "Melee" then
+                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                        if v.ToolTip == "Melee" then
+                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                SelectWeapon = v.Name
+                            end
+                        end
+                    end
+                elseif ChooseWeapon == "Sword" then
+                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                        if v.ToolTip == "Sword" then
+                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                SelectWeapon = v.Name
+                            end
+                        end
+                    end
+                elseif ChooseWeapon == " Blox Fruit" then
+                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                        if v.ToolTip == "Blox Fruit" then
+                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                SelectWeapon = v.Name
+                            end
+                        end
+                    end
+                else
+                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                        if v.ToolTip == "Melee" then
+                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
+                                SelectWeapon = v.Name
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+
+
+    local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {Title = "Auto Level", Default = false })
+    ToggleLevel:OnChanged(function(Value)
+        _G.AutoLevel = Value
+    end)
+    Options.ToggleLevel:SetValue(false)
+    spawn(function()
+        while task.wait() do
+        if _G.AutoLevel then
+        pcall(function()
+          CheckLevel()
+          if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
+          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
+          if BypassTP then
+          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQ.Position).Magnitude > 2500 then
+          BTP(CFrameQ)
+          elseif (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQ.Position).Magnitude < 2500 then
+          Tween(CFrameQ)
+          end
+         else
+            Tween(CFrameQ)
+            end
+          if (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5 then
+          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,QuestLv)
+          end
+          elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+          for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+          if v.Name == Ms then
+          repeat wait(_G.Fast_Delay)
+          AttackNoCD()
+          AutoHaki()
+          EquipTool(SelectWeapon)
+          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+          v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
+          v.HumanoidRootPart.Transparency = 1
+          v.Humanoid.JumpPower = 0
+          v.Humanoid.WalkSpeed = 0
+          v.HumanoidRootPart.CanCollide = false
+          FarmPos = v.HumanoidRootPart.CFrame
+          MonFarm = v.Name
+          --Click
+          until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
+          end   
+          end
+          end
+          for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
+          if string.find(v.Name,NameMon) then
+          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude >= 10 then
+            Tween(v.CFrame * CFrame.new(posX,posY,posZ))
+          end
+          end
+          end
+          end
+          end)
+        end
+        end
+        end)
+        
+        local ToggleMobAura = Tabs.Main:AddToggle("ToggleMobAura", {Title = "Kill Near / Mob Aura", Default = false })
+    ToggleMobAura:OnChanged(function(Value)
+        _G.AutoNear = Value
+    end)
+    Options.ToggleMobAura:SetValue(false)
+    spawn(function()
+        while wait(.1) do
+        if _G.AutoNear then
+        pcall(function()
+          for i,v in pairs (game.Workspace.Enemies:GetChildren()) do
+          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+          if v.Name then
+          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude <= 5000 then
+            repeat wait(_G.Fast_Delay)
+                AttackNoCD()
+          AutoHaki()
+          EquipTool(SelectWeapon)
+          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
+          v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
+          v.HumanoidRootPart.Transparency = 1
+          v.Humanoid.JumpPower = 0
+          v.Humanoid.WalkSpeed = 0
+          v.HumanoidRootPart.CanCollide = false
+          FarmPos = v.HumanoidRootPart.CFrame
+          MonFarm = v.Name
+          --Click
+          until not _G.AutoNear or not v.Parent or v.Humanoid.Health <= 0 or not game.Workspace.Enemies:FindFirstChild(v.Name)
+          end
+          end
+          end
+          end
+          end)
+        end
+        end
+      end)
+
 function CheckLevel()
 local Lv = game:GetService("Players").LocalPlayer.Data.Level.Value
 if First_Sea then
@@ -2182,64 +2350,7 @@ function BTP(p)
 				end
 			end
 		end)
-	end
-local Farming = Tabs.Main:AddSection("Farming")
-
-
-local listfastattack = {'Normal Attack','Fast Attack','Super Fast Attack'}
-
-    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-        Title = "Select Fast Attack",
-        Values = listfastattack,
-        Multi = false,
-        Default = 1,
-    })
-    DropdownDelayAttack:SetValue("Fast Attack")
-    DropdownDelayAttack:OnChanged(function(Value)
-    _G.FastAttackFaiFao_Mode = Value
-	if _G.FastAttackFaiFao_Mode == "Fast Attack" then
-		_G.Fast_Delay = 0.15
-	elseif _G.FastAttackFaiFao_Mode == "Normal Attack" then
-		_G.Fast_Delay = 0.25
-	elseif _G.FastAttackFaiFao_Mode == "Super Fast Attack" then
-		_G.Fast_Delay = 0.05
-	end
-end)
-
-    local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
-        Title = "Weapon",
-        Values = {'Melee','Sword','Blox Fruit'},
-        Multi = false,
-        Default = 1,
-    })
-    DropdownSelectWeapon:SetValue('Melee')
-    DropdownSelectWeapon:OnChanged(function(Value)
-        ChooseWeapon = Value
-    end)
-    task.spawn(function()
-        while wait() do
-            pcall(function()
-                if ChooseWeapon == "Melee" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == "Sword" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Sword" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == " Blox Fruit" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Blox Fruit" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
+	end                                SelectWeapon = v.Name
                             end
                         end
                     end
@@ -2255,98 +2366,3 @@ end)
             end)
         end
     end)
-
-
-    local ToggleLevel = Tabs.Main:AddToggle("ToggleLevel", {Title = "Auto Level", Default = false })
-    ToggleLevel:OnChanged(function(Value)
-        _G.AutoLevel = Value
-    end)
-    Options.ToggleLevel:SetValue(false)
-    spawn(function()
-        while task.wait() do
-        if _G.AutoLevel then
-        pcall(function()
-          CheckLevel()
-          if not string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
-          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
-          if BypassTP then
-          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQ.Position).Magnitude > 2500 then
-          BTP(CFrameQ)
-          elseif (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - CFrameQ.Position).Magnitude < 2500 then
-          Tween(CFrameQ)
-          end
-         else
-            Tween(CFrameQ)
-            end
-          if (CFrameQ.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 5 then
-          game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",NameQuest,QuestLv)
-          end
-          elseif string.find(game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text, NameMon) or game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-          for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-          if v.Name == Ms then
-          repeat wait(_G.Fast_Delay)
-          AttackNoCD()
-          AutoHaki()
-          EquipTool(SelectWeapon)
-          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
-          v.HumanoidRootPart.Size = Vector3.new(60, 60, 60)
-          v.HumanoidRootPart.Transparency = 1
-          v.Humanoid.JumpPower = 0
-          v.Humanoid.WalkSpeed = 0
-          v.HumanoidRootPart.CanCollide = false
-          FarmPos = v.HumanoidRootPart.CFrame
-          MonFarm = v.Name
-          --Click
-          until not _G.AutoLevel or not v.Parent or v.Humanoid.Health <= 0 or not game:GetService("Workspace").Enemies:FindFirstChild(v.Name) or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
-          end   
-          end
-          end
-          for i,v in pairs(game:GetService("Workspace")["_WorldOrigin"].EnemySpawns:GetChildren()) do
-          if string.find(v.Name,NameMon) then
-          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).Magnitude >= 10 then
-            Tween(v.CFrame * CFrame.new(posX,posY,posZ))
-          end
-          end
-          end
-          end
-          end)
-        end
-        end
-        end)
-        
-        local ToggleMobAura = Tabs.Main:AddToggle("ToggleMobAura", {Title = "Kill Near / Mob Aura", Default = false })
-    ToggleMobAura:OnChanged(function(Value)
-        _G.AutoNear = Value
-    end)
-    Options.ToggleMobAura:SetValue(false)
-    spawn(function()
-        while wait(.1) do
-        if _G.AutoNear then
-        pcall(function()
-          for i,v in pairs (game.Workspace.Enemies:GetChildren()) do
-          if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-          if v.Name then
-          if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v:FindFirstChild("HumanoidRootPart").Position).Magnitude <= 5000 then
-            repeat wait(_G.Fast_Delay)
-                AttackNoCD()
-          AutoHaki()
-          EquipTool(SelectWeapon)
-          Tween(v.HumanoidRootPart.CFrame * CFrame.new(posX,posY,posZ))
-          v.HumanoidRootPart.Size = Vector3.new(1, 1, 1)
-          v.HumanoidRootPart.Transparency = 1
-          v.Humanoid.JumpPower = 0
-          v.Humanoid.WalkSpeed = 0
-          v.HumanoidRootPart.CanCollide = false
-          FarmPos = v.HumanoidRootPart.CFrame
-          MonFarm = v.Name
-          --Click
-          until not _G.AutoNear or not v.Parent or v.Humanoid.Health <= 0 or not game.Workspace.Enemies:FindFirstChild(v.Name)
-          end
-          end
-          end
-          end
-          end)
-        end
-        end
-      end)
