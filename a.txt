@@ -168,78 +168,6 @@ Tabs.Shop:AddButton({
 	end
 })
 
-local Mastery = Tabs.Misc:AddSection("Open Ui")
-
-Tabs.Misc:AddButton({
-	Title = "Devil Shop",
-	Description = "",
-	Callback = function()
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
-	end
-})
-
-
-
-Tabs.Misc:AddButton({
-	Title = "Color Haki",
-	Description = "",
-	Callback = function()
-		game.Players.localPlayer.PlayerGui.Main.Colors.Visible = true
-	end
-})
-
-
-
-Tabs.Misc:AddButton({
-	Title = "Title Name",
-	Description = "",
-	Callback = function()
-		local args = {
-			[1] = "getTitles"
-		}
-		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-		game.Players.localPlayer.PlayerGui.Main.Titles.Visible = true
-	end
-})
-
-
-
-Tabs.Misc:AddButton({
-	Title = "Open Awakening",
-	Description = "",
-	Callback = function()
-        game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
-	end
-})
-
-
-
-local Mastery = Tabs.Misc:AddSection("Trolling")
-
-
-
-Tabs.Misc:AddButton({
-	Title = "Rain Fruit",
-	Description = "Rain fruit (Fake)",
-	Callback = function()
-        for i, v in pairs(game:GetObjects("rbxassetid://15970729030")[1]:GetChildren()) do
-            v.Parent = game.Workspace.Map
-            v:MoveTo(game.Players.LocalPlayer.Character.PrimaryPart.Position + Vector3.new(math.random(-50, 50), 100, math.random(-50, 50)))
-            if v.Fruit:FindFirstChild("AnimationController") then
-                v.Fruit:FindFirstChild("AnimationController"):LoadAnimation(v.Fruit:FindFirstChild("Idle")):Play()
-            end
-            v.Handle.Touched:Connect(function(otherPart)
-                if otherPart.Parent == game.Players.LocalPlayer.Character then
-                    v.Parent = game.Players.LocalPlayer.Backpack
-                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)
-                end
-            end)
-        end
-	end
-})
-
-
 Tabs.Race:AddButton({
     Title = "Timple Of Time",
     Description = "",
@@ -882,22 +810,7 @@ spawn(function()
         end
     end)
 end) 
-local Farming = Tabs.Main:AddSection("Farming")
-
-
-local listfastattack = {'Normal Attack','Fast Attack','Super Fast Attack'}
-
-    local DropdownDelayAttack = Tabs.Main:AddDropdown("DropdownDelayAttack", {
-        Title = "Select Fast Attack",
-        Values = listfastattack,
-        Multi = false,
-        Default = 1,
-    })
-    DropdownDelayAttack:SetValue("Fast Attack")
-    DropdownDelayAttack:OnChanged(function(Value)
-    _G.FastAttackFaiFao_Mode = Value
-	if _G.FastAttackFaiFao_Mode == "Fast Attack" then
-		_G.Fast_Delay = 0.15
+Fast_Delay = 0.15
 	elseif _G.FastAttackFaiFao_Mode == "Normal Attack" then
 		_G.Fast_Delay = 0.25
 	elseif _G.FastAttackFaiFao_Mode == "Super Fast Attack" then
@@ -905,48 +818,7 @@ local listfastattack = {'Normal Attack','Fast Attack','Super Fast Attack'}
 	end
 end)
 
-    local DropdownSelectWeapon = Tabs.Main:AddDropdown("DropdownSelectWeapon", {
-        Title = "Weapon",
-        Values = {'Melee','Sword','Blox Fruit'},
-        Multi = false,
-        Default = 1,
-    })
-    DropdownSelectWeapon:SetValue('Melee')
-    DropdownSelectWeapon:OnChanged(function(Value)
-        ChooseWeapon = Value
-    end)
-    task.spawn(function()
-        while wait() do
-            pcall(function()
-                if ChooseWeapon == "Melee" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == "Sword" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Sword" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                elseif ChooseWeapon == " Blox Fruit" then
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Blox Fruit" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
-                            end
-                        end
-                    end
-                else
-                    for i ,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                        if v.ToolTip == "Melee" then
-                            if game.Players.LocalPlayer.Backpack:FindFirstChild(tostring(v.Name)) then
-                                SelectWeapon = v.Name
+                                    SelectWeapon = v.Name
                             end
                         end
                     end
@@ -954,54 +826,73 @@ end)
             end)
         end
     end)
+local Mastery = Tabs.Misc:AddSection("Open Ui")
+
+Tabs.Misc:AddButton({
+	Title = "Devil Shop",
+	Description = "",
+	Callback = function()
+		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("GetFruits")
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
+	end
+})
 
 
-    
-    function FPSBooster()
-        local decalsyeeted = true
-        local g = game
-        local w = g.Workspace
-        local l = g.Lighting
-        local t = w.Terrain
-        sethiddenproperty(l,"Technology",2)
-        sethiddenproperty(t,"Decoration",false)
-        t.WaterWaveSize = 0
-        t.WaterWaveSpeed = 0
-        t.WaterReflectance = 0
-        t.WaterTransparency = 0
-        l.GlobalShadows = false
-        l.FogEnd = 9e9
-        l.Brightness = 0
-        settings().Rendering.QualityLevel = "Level01"
-        for i, v in pairs(g:GetDescendants()) do
-            if v:IsA("Part") or v:IsA("Union") or v:IsA("CornerWedgePart") or v:IsA("TrussPart") then
-                v.Material = "Plastic"
-                v.Reflectance = 0
-            elseif v:IsA("Decal") or v:IsA("Texture") and decalsyeeted then
-                v.Transparency = 1
-            elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
-                v.Lifetime = NumberRange.new(0)
-            elseif v:IsA("Explosion") then
-                v.BlastPressure = 1
-                v.BlastRadius = 1
-            elseif v:IsA("Fire") or v:IsA("SpotLight") or v:IsA("Smoke") or v:IsA("Sparkles") then
-                v.Enabled = false
-            elseif v:IsA("MeshPart") then
-                v.Material = "Plastic"
-                v.Reflectance = 0
-                v.TextureID = 10385902758728957
+
+Tabs.Misc:AddButton({
+	Title = "Color Haki",
+	Description = "",
+	Callback = function()
+		game.Players.localPlayer.PlayerGui.Main.Colors.Visible = true
+	end
+})
+
+
+
+Tabs.Misc:AddButton({
+	Title = "Title Name",
+	Description = "",
+	Callback = function()
+		local args = {
+			[1] = "getTitles"
+		}
+		game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+		game.Players.localPlayer.PlayerGui.Main.Titles.Visible = true
+	end
+})
+
+
+
+Tabs.Misc:AddButton({
+	Title = "Open Awakening",
+	Description = "",
+	Callback = function()
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
+	end
+})
+
+
+
+local Mastery = Tabs.Misc:AddSection("Trolling")
+
+
+
+Tabs.Misc:AddButton({
+	Title = "Rain Fruit",
+	Description = "Rain fruit (Fake)",
+	Callback = function()
+        for i, v in pairs(game:GetObjects("rbxassetid://15970729030")[1]:GetChildren()) do
+            v.Parent = game.Workspace.Map
+            v:MoveTo(game.Players.LocalPlayer.Character.PrimaryPart.Position + Vector3.new(math.random(-50, 50), 100, math.random(-50, 50)))
+            if v.Fruit:FindFirstChild("AnimationController") then
+                v.Fruit:FindFirstChild("AnimationController"):LoadAnimation(v.Fruit:FindFirstChild("Idle")):Play()
             end
+            v.Handle.Touched:Connect(function(otherPart)
+                if otherPart.Parent == game.Players.LocalPlayer.Character then
+                    v.Parent = game.Players.LocalPlayer.Backpack
+                    game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)
+                end
+            end)
         end
-        for i, e in pairs(l:GetChildren()) do
-            if e:IsA("BlurEffect") or e:IsA("SunRaysEffect") or e:IsA("ColorCorrectionEffect") or e:IsA("BloomEffect") or e:IsA("DepthOfFieldEffect") then
-                e.Enabled = false
-            end
-        end
-    end
-
---------------------------------------------------------------------------------------------------------------------------------------------
---Mastery
-	
-
-
-
+	end
+})
