@@ -40,7 +40,7 @@ local Window = Fluent:CreateWindow({
 local Tabs = {
     Shop = Window:AddTab({ Title = "Tabs Shop", Icon = "" }),
     Race = Window:AddTab({ Title = "Tabs Race", Icon = "" }), 
-    Hop = Window:AddTab({ Title = "Tabs Hop", Icon = "" }), 
+    Main = Window:AddTab({ Title = "Tabs Farm", Icon = "" }), 
     Misc = Window:AddTab({ Title = "Tabs Misc", Icon = "" }), 
     Raid = Window:AddTab({ Title = "Tabs Raid", Icon = "" }), 
     
