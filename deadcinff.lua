@@ -32,7 +32,7 @@ local Button = MainTab:CreateButton({
    Name = " Config DeadRail",
    Callback = function()
    -- The function that takes place when the button is pressed
-local DarkraiX = loadstring(game:HttpGet("https://raw.githubusercontent.com/GamingScripter/Kavo-Ui/main/Darkrai%20Ui", true))()
+local DarkraiX = loadstring(game:HttpGet("https://raw.githubusercontent.com/zyrooi/bananahub/refs/heads/main/Darkrai%20Ui%20(1).txt", true))()
 
 local Library = DarkraiX:Window("M-Banana","","",Enum.KeyCode.RightControl);
 
