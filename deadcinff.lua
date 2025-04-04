@@ -22,7 +22,7 @@ local Window = Rayfield:CreateWindow({
       FileName = "YoutubeHubKey1",
       SaveKey = true,
       GrabKeyFromSite = true,
-      Key = {"DctlG3A7JoCo6KZQzI705XcccsEZdo2GebJ", "KcCyUwav8XUISMgPUbY5kt5PRpMH3KUwYGI"}
+      Key = {"DctlG3A7JoCo6KZQzI705XcccsEZdo2GebJ", "KcCyUwav8XUISMgPUbY5kt5PRpMH3KUwYGI", "8ajdh-glxee-lkrov-hevam-0vpin"}
    }
 })
 
