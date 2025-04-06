@@ -13,7 +13,7 @@ local Window = WindUI:CreateWindow({
     HasOutline = false,
     -- remove it below if you don't want to use the key system in your script.
     KeySystem = { 
-        Key = { "WQZAA-0DAS3-SBV4U-QNVRL-39SN5", "T93JP-OBK6-1MJB-EVWUK-AHFKW", "OUNSA-TLWLK-75S6D-AOYVF-DHZ9G"},
+        Key = { "ENGLISH-H6ZCYYKO24PSM6I6HSKPQ2H5P", "ENGLISH-84AE2G6P740I7TXQ6PSYY46V0", "ENGLISH-L09YKUEDECEVKQQO4JZRVTUYV", "ENGLISH-1V0DM5M0GLJ1WJET1MS3QUL1R", "ENGLISH-FJC6S1YBO8ZAJM7ZPX7HCPE2Y"},
         Note = "Premium Key Enter",
         -- Thumbnail = {
         --     Image = "rbxassetid://18220445082", -- rbxassetid only
