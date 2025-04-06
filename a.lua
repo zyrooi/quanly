@@ -1,7 +1,7 @@
 local WindUI = loadstring(game:HttpGet("https://tree-hub.vercel.app/api/UI/WindUI"))()
 
 local Window = WindUI:CreateWindow({
-    Title = "M-Banana Hub",
+    Title = "M-Pro Hub",
     Icon = "door-open",
     Author = "Kiettrumhtml",
     Folder = "CloudHub",
