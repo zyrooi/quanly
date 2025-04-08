@@ -10,7 +10,6 @@ function UILib:CreateWindow(title)
 	ScreenGui.Name = "ExtremeUI"
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.Parent = PlayerGui
-	ScreenGui.Enabled = true
 
 	local Main = Instance.new("Frame")
 	Main.Size = UDim2.new(0, 580, 0, 260)
@@ -31,7 +30,6 @@ function UILib:CreateWindow(title)
 	Top.Parent = Main
 	Instance.new("UICorner", Top).CornerRadius = UDim.new(0, 12)
 
-	-- Tabs Scrolling
 	local TabsScroll = Instance.new("ScrollingFrame")
 	TabsScroll.Size = UDim2.new(1, -20, 0, 40)
 	TabsScroll.Position = UDim2.new(0, 10, 0, 45)
@@ -40,7 +38,6 @@ function UILib:CreateWindow(title)
 	TabsScroll.ScrollingDirection = Enum.ScrollingDirection.X
 	TabsScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
 	TabsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-	TabsScroll.Visible = false  -- Ẩn ScrollingFrame
 	TabsScroll.Parent = Main
 
 	local TabsLayout = Instance.new("UIListLayout")
@@ -49,7 +46,6 @@ function UILib:CreateWindow(title)
 	TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	TabsLayout.Parent = TabsScroll
 
-	-- Pages for each tab
 	local Pages = Instance.new("Frame")
 	Pages.Size = UDim2.new(1, -20, 1, -95)
 	Pages.Position = UDim2.new(0, 10, 0, 90)
@@ -69,10 +65,15 @@ function UILib:CreateWindow(title)
 		TabBtn.Parent = TabsScroll
 		Instance.new("UICorner", TabBtn).CornerRadius = UDim.new(0, 10)
 
-		local Page = Instance.new("Frame")
+		local Page = Instance.new("ScrollingFrame")
 		Page.Size = UDim2.new(1, 0, 1, 0)
 		Page.BackgroundTransparency = 1
 		Page.Visible = false
+		Page.ScrollBarThickness = 6
+		Page.CanvasSize = UDim2.new(0, 0, 0, 0)
+		Page.AutomaticCanvasSize = Enum.AutomaticSize.Y
+		Page.ScrollingDirection = Enum.ScrollingDirection.Y
+		Page.ClipsDescendants = true
 		Page.Parent = Pages
 
 		local Layout = Instance.new("UIListLayout", Page)
@@ -81,7 +82,7 @@ function UILib:CreateWindow(title)
 
 		TabBtn.MouseButton1Click:Connect(function()
 			for _, p in pairs(Pages:GetChildren()) do
-				if p:IsA("Frame") then p.Visible = false end
+				if p:IsA("ScrollingFrame") then p.Visible = false end
 			end
 			for _, b in pairs(TabsScroll:GetChildren()) do
 				if b:IsA("TextButton") then
