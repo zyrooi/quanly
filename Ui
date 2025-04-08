@@ -156,13 +156,14 @@ function UILib:CreateWindow(title)
 		return functions
 	end
 
-	-- Thêm nút bật/tắt UI
+	-- Thêm nút bật/tắt UI ngoài UI chính
 	local ToggleButton = Instance.new("ImageButton")
-	ToggleButton.Size = UDim2.new(0, 55, 0, 55)
-	ToggleButton.Position = UDim2.new(0, 0, 0, 0)
+	ToggleButton.Size = UDim2.new(0, 40, 0, 40)
+	ToggleButton.Position = UDim2.new(0, 10, 0, 10)
 	ToggleButton.BackgroundTransparency = 1
-	ToggleButton.Image = "rbxthumb://type=Asset&id=91683227610697&w=420&h=420"  -- Thay 'your_image_id_here' bằng ID ảnh của bạn
-	ToggleButton.Parent = Main
+	ToggleButton.Image = "rbxthumb://type=Asset&id=91683227610697&w=420&h=420"  -- ID ảnh bạn đã cung cấp
+	Instance.new("UICorner", ToggleButton).CornerRadius = UDim.new(1, 0)  -- Bo tròn button
+	ToggleButton.Parent = ScreenGui  -- Đặt ngoài Main
 
 	local isVisible = true
 	ToggleButton.MouseButton1Click:Connect(function()
