@@ -32,7 +32,7 @@ function UILib:CreateWindow(title)
     local ScreenGui = getOrCreateGUI("ExtremeUI")
 
     local Main = Instance.new("Frame")
-    Main.Size = UDim2.new(0, 580, 0, 260)
+    Main.Size = UDim2.new(0, 600, 0, 280)
     Main.Position = UDim2.new(0.5, -290, 0.5, -125)
     Main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     Main.BorderSizePixel = 0
