@@ -12,8 +12,8 @@ function UILib:CreateWindow(title)
 	ScreenGui.Parent = PlayerGui
 
 	local Main = Instance.new("Frame")
-	Main.Size = UDim2.new(0, 585, 0, 380)
-	Main.Position = UDim2.new(0.5, -290, 0.5, -130)
+	Main.Size = UDim2.new(0, 590, 0, 380)
+	Main.Position = UDim2.new(0.5, -295, 0.5, -190)
 	Main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 	Main.BorderSizePixel = 0
 	Main.Parent = ScreenGui
@@ -30,12 +30,11 @@ function UILib:CreateWindow(title)
 	Top.Parent = Main
 	Instance.new("UICorner", Top).CornerRadius = UDim.new(0, 12)
 
-	-- Tạo ScrollingFrame cho các Tab
 	local TabsScroll = Instance.new("ScrollingFrame")
 	TabsScroll.Size = UDim2.new(1, -20, 0, 40)
 	TabsScroll.Position = UDim2.new(0, 10, 0, 45)
 	TabsScroll.BackgroundTransparency = 1
-	TabsScroll.ScrollBarThickness = 0  -- Ẩn thanh cuộn
+	TabsScroll.ScrollBarThickness = 0
 	TabsScroll.ScrollingDirection = Enum.ScrollingDirection.X
 	TabsScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
 	TabsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -47,16 +46,34 @@ function UILib:CreateWindow(title)
 	TabsLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	TabsLayout.Parent = TabsScroll
 
-	-- Tạo ScrollingFrame cho các nội dung
 	local Pages = Instance.new("ScrollingFrame")
 	Pages.Size = UDim2.new(1, -20, 1, -95)
 	Pages.Position = UDim2.new(0, 10, 0, 90)
 	Pages.BackgroundTransparency = 1
-	Pages.ScrollBarThickness = 4  -- Cho phép cuộn dọc
+	Pages.ScrollBarThickness = 4
 	Pages.ScrollingDirection = Enum.ScrollingDirection.Y
 	Pages.AutomaticCanvasSize = Enum.AutomaticSize.Y
 	Pages.CanvasSize = UDim2.new(0, 0, 0, 0)
 	Pages.Parent = Main
+
+	local CloseButton = Instance.new("ImageButton")
+	CloseButton.Size = UDim2.new(0, 55, 0, 55)
+	CloseButton.Position = UDim2.new(1, -65, 0, 10)
+	CloseButton.Image = "rbxassetid://91683227610697"
+	CloseButton.BackgroundTransparency = 1
+	Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 8)
+	CloseButton.Parent = Main
+
+	local UIVisible = true
+
+	CloseButton.MouseButton1Click:Connect(function()
+		UIVisible = not UIVisible
+		if UIVisible then
+			ScreenGui.Enabled = true
+		else
+			ScreenGui.Enabled = false
+		end
+	end)
 
 	local Tabs = {}
 
@@ -160,18 +177,6 @@ function UILib:CreateWindow(title)
 
 		return functions
 	end
-
-	-- Tạo nút tắt ngoài UI
-	local CloseButton = Instance.new("ImageButton")
-	CloseButton.Size = UDim2.new(0, 55, 0, 55)
-	CloseButton.Position = UDim2.new(0, 10, 0, 10)
-	CloseButton.Image = "rbxthumb://type=Asset&id=91683227610697&w=420&h=420"
-	CloseButton.BackgroundTransparency = 1
-	CloseButton.Parent = ScreenGui
-	Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 8)
-	CloseButton.MouseButton1Click:Connect(function()
-		ScreenGui:Destroy()
-	end)
 
 	return Tabs
 end
