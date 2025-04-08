@@ -1,5 +1,3 @@
--- UI Đẹp Gọn Gàng (1 hàng, đơn giản, mượt)
-
 local UILib = {}
 
 local TweenService = game:GetService("TweenService")
@@ -8,9 +6,6 @@ local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 
 function UILib:CreateWindow(title)
-	local Blur = Instance.new("BlurEffect", game:GetService("Lighting"))
-	Blur.Size = 15
-
 	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = "ExtremeUI"
 	ScreenGui.ResetOnSpawn = false
@@ -23,7 +18,7 @@ function UILib:CreateWindow(title)
 	Main.BorderSizePixel = 0
 	Main.Parent = ScreenGui
 	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
-	
+
 	local Top = Instance.new("TextLabel")
 	Top.Size = UDim2.new(1, 0, 0, 40)
 	Top.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -144,6 +139,17 @@ function UILib:CreateWindow(title)
 				}):Play()
 				if options.Callback then options.Callback(state) end
 			end)
+		end
+
+		function functions:Seperator(text)
+			local Line = Instance.new("TextLabel")
+			Line.Size = UDim2.new(1, 0, 0, 25)
+			Line.Text = "— " .. (text or "") .. " —"
+			Line.Font = Enum.Font.Gotham
+			Line.TextColor3 = Color3.fromRGB(150, 150, 150)
+			Line.TextSize = 14
+			Line.BackgroundTransparency = 1
+			Line.Parent = Page
 		end
 
 		return functions
