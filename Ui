@@ -12,7 +12,7 @@ function UILib:CreateWindow(title)
 	ScreenGui.Parent = PlayerGui
 
 	local Main = Instance.new("Frame")
-	Main.Size = UDim2.new(0, 580, 0, 260)
+	Main.Size = UDim2.new(0, 585, 0, 380)
 	Main.Position = UDim2.new(0.5, -290, 0.5, -130)
 	Main.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 	Main.BorderSizePixel = 0
@@ -168,7 +168,7 @@ function UILib:CreateWindow(title)
 	CloseButton.Image = "rbxthumb://type=Asset&id=91683227610697&w=420&h=420"
 	CloseButton.BackgroundTransparency = 1
 	CloseButton.Parent = ScreenGui
-	Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(1, 0)
+	Instance.new("UICorner", CloseButton).CornerRadius = UDim.new(0, 8)
 	CloseButton.MouseButton1Click:Connect(function()
 		ScreenGui:Destroy()
 	end)
