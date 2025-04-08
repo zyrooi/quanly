@@ -10,6 +10,7 @@ function UILib:CreateWindow(title)
 	ScreenGui.Name = "ExtremeUI"
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.Parent = PlayerGui
+	ScreenGui.Enabled = true
 
 	local Main = Instance.new("Frame")
 	Main.Size = UDim2.new(0, 580, 0, 260)
@@ -39,6 +40,7 @@ function UILib:CreateWindow(title)
 	TabsScroll.ScrollingDirection = Enum.ScrollingDirection.X
 	TabsScroll.AutomaticCanvasSize = Enum.AutomaticSize.X
 	TabsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+	TabsScroll.Visible = false  -- Ẩn ScrollingFrame
 	TabsScroll.Parent = Main
 
 	local TabsLayout = Instance.new("UIListLayout")
@@ -77,7 +79,6 @@ function UILib:CreateWindow(title)
 		Layout.Padding = UDim.new(0, 6)
 		Layout.SortOrder = Enum.SortOrder.LayoutOrder
 
-		-- Switch pages when tab is clicked
 		TabBtn.MouseButton1Click:Connect(function()
 			for _, p in pairs(Pages:GetChildren()) do
 				if p:IsA("Frame") then p.Visible = false end
@@ -93,22 +94,6 @@ function UILib:CreateWindow(title)
 
 		local functions = {}
 
-		-- Scrollable content for buttons
-		local ScrollFrame = Instance.new("ScrollingFrame")
-		ScrollFrame.Size = UDim2.new(1, 0, 1, -50)
-		ScrollFrame.Position = UDim2.new(0, 0, 0, 50)
-		ScrollFrame.BackgroundTransparency = 1
-		ScrollFrame.ScrollBarThickness = 6
-		ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-		ScrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
-		ScrollFrame.Parent = Page
-
-		local Layout = Instance.new("UIListLayout")
-		Layout.FillDirection = Enum.FillDirection.Vertical
-		Layout.Padding = UDim.new(0, 10)
-		Layout.SortOrder = Enum.SortOrder.LayoutOrder
-		Layout.Parent = ScrollFrame
-
 		function functions:Button(options)
 			local Btn = Instance.new("TextButton")
 			Btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -118,7 +103,7 @@ function UILib:CreateWindow(title)
 			Btn.Font = Enum.Font.GothamMedium
 			Btn.TextSize = 15
 			Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 8)
-			Btn.Parent = ScrollFrame
+			Btn.Parent = Page
 			Btn.MouseButton1Click:Connect(function()
 				if options.Callback then options.Callback() end
 			end)
@@ -129,7 +114,7 @@ function UILib:CreateWindow(title)
 			Holder.Size = UDim2.new(1, 0, 0, 40)
 			Holder.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 			Instance.new("UICorner", Holder).CornerRadius = UDim.new(0, 8)
-			Holder.Parent = ScrollFrame
+			Holder.Parent = Page
 
 			local Label = Instance.new("TextLabel")
 			Label.Size = UDim2.new(1, -60, 1, 0)
@@ -168,26 +153,7 @@ function UILib:CreateWindow(title)
 			Line.TextColor3 = Color3.fromRGB(150, 150, 150)
 			Line.TextSize = 14
 			Line.BackgroundTransparency = 1
-			Line.Parent = ScrollFrame
-		end
-
-		function functions:ToggleImage(options)
-			local Btn = Instance.new("TextButton")
-			Btn.Size = UDim2.new(0, 100, 0, 40)
-			Btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-			Btn.Text = options.Title or "Toggle Image"
-			Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			Btn.Font = Enum.Font.GothamMedium
-			Btn.TextSize = 15
-			Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 8)
-			Btn.Parent = ScrollFrame
-			Btn.MouseButton1Click:Connect(function()
-				local img = Instance.new("ImageLabel")
-				img.Size = UDim2.new(0, 100, 0, 100)
-				img.Position = UDim2.new(0, 10, 0, 10)
-				img.Image = "rbxthumb://type=Asset&id=91683227610697&w=420&h=420"
-				img.Parent = Page
-			end)
+			Line.Parent = Page
 		end
 
 		return functions
